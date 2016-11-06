@@ -1,4 +1,4 @@
-package de.oveits.velocitytemple;
+package de.oveits.simplerestfulfilestorage;
 
 import java.net.URLDecoder;
 
@@ -22,7 +22,7 @@ public class MainTest {
 	public static void main(final String[] args) throws Exception {
 		// if only option is to start ALL tests:
 //	    JUnitCore.main(
-//	    	"de.oveits.velocitytemple.ProvisioningAddSiteTest", "noRoutes");  
+//	    	"de.oveits.simplerestfulfilestorage.ProvisioningAddSiteTest", "noRoutes");  
 		// else we try to read the options and decide, whether all tests or
 		// only a single test is executed:
 		
@@ -43,13 +43,13 @@ public class MainTest {
 		    if (cmd.hasOption("testcase")) {
 		        // print the value of block-size
 		        System.out.println(cmd.getOptionValue("testcase"));
-		        Request request = Request.method(Class.forName("de.oveits.velocitytemple.VelocityTempleTests"),
+		        Request request = Request.method(Class.forName("de.oveits.simplerestfulfilestorage.SimpleRestfulFileStorageTests"),
 		        		cmd.getOptionValue("testcase"));
 
 		        Result result = new JUnitCore().run(request);
 		    } else {
 		    	JUnitCore.main(
-		  	  	      "de.oveits.velocitytemple.VelocityTempleTests"); 
+		  	  	      "de.oveits.simplerestfulfilestorage.SimpleRestfulFileStorageTests"); 
 		    }     
 		}
 		
@@ -65,12 +65,12 @@ public class MainTest {
 		    
 		    // get option help text:
 		    formatter.printHelp("java -jar " + decodedPath, options);
-//		    System.out.println("Available Testcases:" + Class.forName("de.oveits.velocitytemple.VelocityTempleTests").getMethods().getClass().getSimpleName());
+//		    System.out.println("Available Testcases:" + Class.forName("de.oveits.simplerestfulfilestorage.SimpleRestfulFileStorageTests").getMethods().getClass().getSimpleName());
 		    
 		}
 		
 //	    JUnitCore.main(
-//	  	      "de.oveits.velocitytemple.VelocityTempleTests"); 
+//	  	      "de.oveits.simplerestfulfilestorage.SimpleRestfulFileStorageTests"); 
 	    }
 
 }

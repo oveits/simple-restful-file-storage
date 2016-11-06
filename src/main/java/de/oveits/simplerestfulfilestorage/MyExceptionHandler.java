@@ -1,4 +1,4 @@
-package de.oveits.velocitytemple;
+package de.oveits.simplerestfulfilestorage;
 
 
 

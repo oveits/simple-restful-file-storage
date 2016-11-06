@@ -5,7 +5,7 @@ apply plugin: 'checkstyle'
 group = 'com.mycompany'
 version = '0.0.1-SNAPSHOT'
 
-description = """Velocity Temple"""
+description = """Simple restful File Storage"""
 
 sourceCompatibility = 1.6
 targetCompatibility = 1.6
@@ -24,7 +24,6 @@ dependencies {
     compile group: 'org.apache.camel', name: 'camel-core', version:'2.16.0'
     compile group: 'org.apache.camel', name: 'camel-spring', version:'2.16.0'
     compile group: 'org.apache.camel', name: 'camel-jetty', version:'2.16.0'
-    compile group: 'org.apache.camel', name: 'camel-velocity', version:'2.16.0'
     compile group: 'org.apache.camel', name: 'camel-ftp', version:'2.16.0'
     compile group: 'org.apache.camel', name: 'camel-http', version:'2.16.0'
     compile group: 'org.apache.camel', name: 'camel-stringtemplate', version:'2.16.0'
@@ -76,14 +75,14 @@ task copyResourcesToLib (type: Copy) {
 jar {
     // exclude the resources (they are found outside of the jar):
     exclude ("properties/**")
-    exclude ("templates/**")
+    exclude ("files/**")
     exclude ("log4j.properties")
     
 
     // make jar executable: see http://stackoverflow.com/questions/21721119/creating-runnable-jar-with-gradle
     manifest {
         attributes (
-	    'Main-Class': 'de.oveits.velocitytemple.MainApp',
+	    'Main-Class': 'de.oveits.simplerestfulfilestorage.MainApp',
 	    // add classpath to Manifest; see http://stackoverflow.com/questions/30087427/add-classpath-in-manifest-file-of-jar-in-gradle
 	    "Class-Path": '. lib/' + configurations.compile.collect { it.getName() }.join(' lib/')
 	    )
@@ -95,13 +94,13 @@ task testJar(type: Jar) {
     testJar {
 	// exclude the resources (they are found outside of the jar):
         exclude ("properties/**")
-	exclude ("templates/**")
+	exclude ("files/**")
 	exclude ("log4j.properties")
 
         // make jar executable: see http://stackoverflow.com/questions/21721119/creating-runnable-jar-with-gradle
         manifest {
             attributes (
-                'Main-Class': 'de.oveits.velocitytemple.MainTest',
+                'Main-Class': 'de.oveits.simplerestfulfilestorage.MainTest',
                 // add classpath to Manifest; see http://stackoverflow.com/questions/30087427/add-classpath-in-manifest-file-of-jar-in-gradle
                 "Class-Path": '. lib/' + configurations.compile.collect { it.getName() }.join(' lib/')
                 )

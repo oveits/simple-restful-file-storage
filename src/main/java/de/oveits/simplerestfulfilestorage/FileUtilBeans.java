@@ -1,13 +1,19 @@
-package de.oveits.velocitytemple;
+package de.oveits.simplerestfulfilestorage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
 import org.apache.camel.Header;
 import org.apache.camel.util.FileUtil;
+import org.apache.log4j.Logger;
 
-public class FileUtilBeans {		
-	public final boolean deleteFile(@Header("fileName") final String fileName)  {
+
+public class FileUtilBeans {
+	
+	private static final Logger LOG = Logger.getLogger(FileUtilBeans.class);
+	
+	public final boolean deleteFileOld(@Header("fileName") final String fileName)  {
 //			if (true) throw(new RuntimeException("FileUtilBeans.deleteFile: exit1"));			
 
 	        File file = new File(fileName);
@@ -17,7 +23,52 @@ public class FileUtilBeans {
 
 	        return returnValue; //FileUtil.deleteFile(file);
 	    }
+	
+	public final boolean deleteFile(@Header("folderList") final String folderList, @Header("fileName") final String fileName) { //, @Body byte[] body){
+		// folderList accepts a comma-separated list of folders
+		if (folderList == null) {
+			throw(new RuntimeException("FileUtilBeans.class: deleteFile was called with null FolderList!"));			
+		}
+		
+		String[] fullPathArray = folderList.split(",");
+		boolean returnValue = false;
 
+		// loop over list of folders:
+		for (int i = 0; i < fullPathArray.length; i++) {
+			try {
+
+				String name = fullPathArray[i].trim() + "/" + fileName;
+				File file = new File(name);
+				
+				 //FileUtil.deleteFile(file);
+
+				try {	
+					LOG.debug("Trying to delete " + name);
+					returnValue = FileUtil.deleteFile(file);
+					LOG.debug("returnValue=" + returnValue);
+					if(returnValue == false) 
+						throw (new RuntimeException("Could not find " + file));
+					
+				} finally {
+					
+				}
+				// if you reach here, the file was found and we
+				// can leave the for loop:
+				break;
+			} catch (Exception e) {
+				// Throw an error, if this was the last file
+				// path in the list
+				if (i == fullPathArray.length - 1) {
+					LOG.debug("deleteFile: Could not find " + fileName + " in any of the folders " + folderList);
+					return false;
+//					throw (new RuntimeException("Could not find " + fileName + " in any of the folders " + folderList));
+				}
+			}
+		}
+		
+		return returnValue;
+	}
+	
 	public final String listFiles(@Header("directoryName") final String directoryName)  {
 
         File directory = new File(directoryName);
