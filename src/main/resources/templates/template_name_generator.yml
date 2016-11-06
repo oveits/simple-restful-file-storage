@@ -1,0 +1,21 @@
+# this is an attempt to make the templateNameGenerator easily readable
+# however, its processing is not yet implemented
+#  e.g. I could try to create a velocity template from it. 
+#  Or I could try to convert the content to a map and write this to a header, which in turn can be used in a velocity template...
+prefix:	"template_"
+suffix:	".txt.vm"
+separator:	"_"
+postprocessor:	replaceAll(' ','_')
+map:	"map"
+  - key:	"systemType"
+    value:	systemType	
+  - key:	"templateType"
+    value:	templateType	
+  - key:	"action"
+    value:	action
+  - key:	"routingType"
+  	if:		systemType.startsWith("OSV") && templateType == "config" && ( action == "Add Site" || action == "Add User") && GatewayIP && GatewayIP != "0.0.0.0"
+ 	value:	"localGW"
+  -	key:	"CC"
+ 	if:		CC && action == "Add Site"
+ 	value:	CC

@@ -1,0 +1,5 @@
+# This is a test template. 
+#set( $D = '$' )
+# Try sending sth. like http://localhost:2004/velocitytemplate/?templateName=test_template.vm&cached=false&myvar=myvalue
+# The next line then should contain "myvar=myvalue" instead of myvar=${D}{headers.myvar}
+myvar=${headers.myvar}

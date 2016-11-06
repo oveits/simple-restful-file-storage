@@ -1,0 +1,122 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'checkstyle'
+
+group = 'com.mycompany'
+version = '0.0.1-SNAPSHOT'
+
+description = """Velocity Temple"""
+
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
+
+
+
+repositories {
+        
+     maven { url "http://repo.fusesource.com/nexus/content/repositories/releases" }
+     maven { url "http://repo.fusesource.com/nexus/content/groups/ea" }
+     maven { url "http://repo.fusesource.com/nexus/content/repositories/snapshots" }
+     maven { url "http://repo1.maven.org/maven2" }
+     maven { url "http://repo.maven.apache.org/maven2" }
+}
+dependencies {
+    compile group: 'org.apache.camel', name: 'camel-core', version:'2.16.0'
+    compile group: 'org.apache.camel', name: 'camel-spring', version:'2.16.0'
+    compile group: 'org.apache.camel', name: 'camel-jetty', version:'2.16.0'
+    compile group: 'org.apache.camel', name: 'camel-velocity', version:'2.16.0'
+    compile group: 'org.apache.camel', name: 'camel-ftp', version:'2.16.0'
+    compile group: 'org.apache.camel', name: 'camel-http', version:'2.16.0'
+    compile group: 'org.apache.camel', name: 'camel-stringtemplate', version:'2.16.0'
+    compile group: 'org.apache.camel', name: 'camel-ssh', version:'2.16.0'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.5'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.5'
+    compile group: 'log4j', name: 'log4j', version:'1.2.17'
+    compile group: 'com.google.guava', name: 'guava', version:'18.0'
+    compile group: 'org.apache.activemq', name: 'activemq-core', version:'5.6.0'
+    compile group: 'org.apache.camel', name: 'camel-maven-plugin', version:'2.16.0'
+    testCompile group: 'org.apache.camel', name: 'camel-test-spring', version:'2.16.0'
+
+    // adding the classes from src/main to the test jar:
+    // inspired by https://discuss.gradle.org/t/building-multiple-jars-per-project/5454/3
+    testCompile sourceSets.main.output
+}
+
+// copy jar files to build/libs/lib (see http://stackoverflow.com/questions/21721119/creating-runnable-jar-with-gradle)
+task copyJarsToLib (type: Copy) {
+    //println "executing copyJarsToLib"
+    def toDir = "build/libs/lib"
+    file(toDir).mkdirs()
+
+    // debugging:
+    //configurations.compile.each { println it }
+    //configurations.testCompile.each { println it }
+
+    // copy jars to lib folder:
+    from configurations.compile
+    from configurations.testCompile
+    into toDir
+}
+
+task copyResourcesToLib (type: Copy) {
+    //println "executing copyResourcesToLib"
+    def toDir = "build/libs"
+    file(toDir).mkdirs()
+ 
+    // debugging:
+    //sourceSets.main.resources.each { println it }
+    //sourceSets.test.resources.each { println it }
+
+    from sourceSets.main.resources
+    from sourceSets.test.resources
+    into toDir
+    
+}
+
+jar {
+    // exclude the resources (they are found outside of the jar):
+    exclude ("properties/**")
+    exclude ("templates/**")
+    exclude ("log4j.properties")
+    
+
+    // make jar executable: see http://stackoverflow.com/questions/21721119/creating-runnable-jar-with-gradle
+    manifest {
+        attributes (
+	    'Main-Class': 'de.oveits.velocitytemple.MainApp',
+	    // add classpath to Manifest; see http://stackoverflow.com/questions/30087427/add-classpath-in-manifest-file-of-jar-in-gradle
+	    "Class-Path": '. lib/' + configurations.compile.collect { it.getName() }.join(' lib/')
+	    )
+    }
+}
+
+// create test jar: see http://stackoverflow.com/questions/10034084/creating-a-jar-of-test-binaries-gradle + trial and error or better trial and success:
+task testJar(type: Jar) {
+    testJar {
+	// exclude the resources (they are found outside of the jar):
+        exclude ("properties/**")
+	exclude ("templates/**")
+	exclude ("log4j.properties")
+
+        // make jar executable: see http://stackoverflow.com/questions/21721119/creating-runnable-jar-with-gradle
+        manifest {
+            attributes (
+                'Main-Class': 'de.oveits.velocitytemple.MainTest',
+                // add classpath to Manifest; see http://stackoverflow.com/questions/30087427/add-classpath-in-manifest-file-of-jar-in-gradle
+                "Class-Path": '. lib/' + configurations.compile.collect { it.getName() }.join(' lib/')
+                )
+        }
+    }
+   version = 'test-0.0.1-SNAPSHOT'
+   from sourceSets.test.output
+   from sourceSets.main.output
+}
+
+// always call copyResourcesToLib when building jars:
+jar.dependsOn copyResourcesToLib
+testJar.dependsOn copyResourcesToLib
+
+// always call copyJarsToLib when building jars:
+jar.dependsOn copyJarsToLib
+testJar.dependsOn copyJarsToLib
+

@@ -1,0 +1,43 @@
+## calculate templateName and set next hop (nextRoutingSlip)
+## 
+## define variables (prefix, suffix, map)
+##
+#set ( $prefix = "template" )
+#set ( $suffix = ".txt.vm" )
+#set ( $map = {} )
+#if ( ${headers.systemType} )
+  #set ( $dummy = ${map.put('systemType', ${headers.systemType})} )
+#end
+#if ( ${headers.action} )
+#if (( ${headers.templateType} == "batchFile" || ${headers.templateType} == "sshCommands" ) && ( ${headers.action} == "Add User" || ${headers.action} == "Delete User" ))
+  #set ( $dummy = ${map.put('action', 'OTHER')} )
+#else
+  #set ( $dummy = ${map.put('action', ${headers.action})} )
+#end
+#end
+#if ( ${headers.templateType} )
+  #set ( $dummy = ${map.put('templateType', ${headers.templateType.replaceAll(' ','_')})} )
+#end
+#if ( ${headers.systemType.startsWith("OSV")} && ${headers.templateType} == "config" )
+#if ( ${headers.action} == "Add Site" || ${headers.action} == "Add User" )
+#if ( ${headers.GatewayIP} && ${headers.GatewayIP} != "0.0.0.0" )
+  #set ( $dummy = ${map.put('routingType', 'localGW')} )
+#end
+#end
+#if ( ${headers.CC} && ${headers.action} == "Add Site" )
+  #set ( $dummy = ${map.put('CC', ${headers.CC})} )
+#end
+#end## "OSV"
+##
+## calculate templateName
+##
+#set ( ${headers.templateName} = "$prefix" )##
+#foreach( $key in $map.keySet() )
+#set ( ${headers.templateName} = "${headers.templateName}_$key=$map.get($key).replaceAll(' ','_')" )##
+#end
+#set ( ${headers.templateName} = "${headers.templateName}$suffix" )##
+##
+## set next hop (a.k.a. nextHop)
+##
+#set ( ${headers.nextHop} = "direct:applyTemplate" )##
+##

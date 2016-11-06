@@ -1,0 +1,11 @@
+*.log
+wireTap*.txt
+.svn
+/target
+/tmp
+#src/main/resources/templates
+src/main/resources/templates/ttt
+src/main/resources/templates/testfolder/
+.gradle
+*.swp
+build/*
