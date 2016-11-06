@@ -1,4 +1,4 @@
-package de.oveits.velocitytemple;
+package de.oveits.simplerestfulfilestorage;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
@@ -218,11 +218,13 @@ public class MyRouteBuilder extends RouteBuilder {
 		
 		from("direct:deleteFile")
 			.routeId("deleteFile")
-//			.log("direct:deleteFile started with file=${headers.fileName}")			
-			.setHeader("fileName", simple("src/main/resources/files/${headers.fileName}"))
+			.log("direct:deleteFile started with file=${headers.fileName}")		
 			.to("direct:verifyFileName")
 			.setHeader("folderList",	simple("files, src/main/resources/files"))
+			.log("direct:deleteFile started with folderList=${headers.folderList}")
+			.log("direct:deleteFile: calling FileUtilBeans deleteFile")	
 			.bean(FileUtilBeans.class, "deleteFile")
+			.log("direct:deleteFile: finished FileUtilBeans deleteFile")	
 		    .setHeader("Location", simple("${headers.CamelHttpUrl}"))
 			.choice()
 				.when(body().isEqualTo("true"))
@@ -232,7 +234,7 @@ public class MyRouteBuilder extends RouteBuilder {
 					.setHeader("CamelHttpResponseCode", constant("404"))
 					.setBody(simple("404 Not Found: file ${headers.fileName} does not exist"))
 			.end()
-//			.log("direct:deleteFile ended with file=${headers.fileName}")
+			.log("direct:deleteFile ended with file=${headers.fileName}")
 		;
 
 				

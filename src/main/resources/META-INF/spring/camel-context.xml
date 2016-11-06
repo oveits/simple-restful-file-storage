@@ -8,8 +8,8 @@
        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
-  <bean id="myRouteBuilder" class="de.oveits.velocitytemple.MyRouteBuilder"/>
-  <!--  <bean id="myRouteBuilder2" class="de.oveits.velocitytemple.MyRouteBuilder2"/> -->
+  <bean id="myRouteBuilder" class="de.oveits.simplerestfulfilestorage.MyRouteBuilder"/>
+  <!--  <bean id="myRouteBuilder2" class="de.oveits.simplerestfulfilestorage.MyRouteBuilder2"/> -->
 
   <camelContext xmlns="http://camel.apache.org/schema/spring">
     <propertyPlaceholder location="properties/this.properties" id="properties"/>
