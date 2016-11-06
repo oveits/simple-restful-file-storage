@@ -12,20 +12,9 @@
   <!--  <bean id="myRouteBuilder2" class="de.oveits.velocitytemple.MyRouteBuilder2"/> -->
 
   <camelContext xmlns="http://camel.apache.org/schema/spring">
-    <propertyPlaceholder location="properties/velocity-template-temple.properties" id="properties"/>
+    <propertyPlaceholder location="properties/this.properties" id="properties"/>
     <routeBuilder ref="myRouteBuilder"/>
-    <!-- <routeBuilder ref="myRouteBuilder2"/> -->
-    <!-- <endpoint uri="jetty:http://0.0.0.0:{{routingSlip.inputport}}/routingSlip?continuationTimeout=3600000" id="routingSlip"/>
-    <route customId="true" id="routingSlip">
-        <from ref="routingSlip"/>
-        <routingSlip uriDelimiter=",">
-            <header>routingSlip</header>
-        </routingSlip>
-    </route> -->
 </camelContext>
 
-<bean id="verifyTemplate" class="de.oveits.velocitytemple.VerifyData"/>
-<bean id="clearContentCache" class="de.oveits.velocitytemple.ClearContentCache"/>
-<!--  <bean id="myExeptionHandler" class="de.oveits.velocitytemple.MyExceptionHandler"/>
--->
+
 </beans>
