@@ -28,46 +28,49 @@ import org.apache.log4j.PropertyConfigurator;
  * A Camel Application
  */
 public class MainApp {
+	/**
+	 * Main Class: Simple RESTful File Store based on Apache Camel
+	 * 
+	 * Run with
+	 * java -jar -Dlog4j.configuration=file:full_path_to_log4j.properties full_path_to_jarfile.jar
+	 * 
+	 * Stop with Ctrl-C in the command line terminal running the program or kill from outside.
+	 * 
+	 * @param args: none
+	 */
 
     private static final String LOG_CONF_NAME = "camel.lcf";
     
-    /**
-     * A main() so we can easily run these routing rules in our IDE
-     */
     public static void main(final String... args) throws Exception {
+        /**
+         * main() procedure for starting logging and starting Camel routes
+         * 
+         */    	
     	
-//    	// OV added: write myHTTPHeaderFilterStrategy into registry for later use for HTTP producers
-//    	SimpleRegistry registry = new SimpleRegistry();
-//    	CamelContext context = new DefaultCamelContext(registry);
-//    	//
-//    	HeaderFilterStrategy myHTTPHeaderFilterStrategy = new MyHTTPHeaderFilterStrategy();
-//    	//
-//    	registry.put("myHTTPHeaderFilterStrategy", myHTTPHeaderFilterStrategy);
-    	
+    	// is it really needed? Try without!
         initLogging();
-        
-//        startCXF();
+       
         startCamel(args);
         
     }
-    
-//    private static void startCXF() throws Exception {
-//        BrokerService broker = new BrokerService();
-//        broker.setDataDirectory("data/");
-//        broker.addConnector("cxf");
-//        //broker.addConnector("tcp://localhost:61616");
-//        broker.start();
-//    }
-
 
     private static void startCamel(final String[] args) throws Exception {
+    	/**
+         * startCamel() procedure for starting Camel routes
+         * 
+         */ 
         Main main = new Main();
         main.enableHangupSupport();
-        //main.addRouteBuilder(new MyRouteBuilder());
+
         main.run(args);
     }
     
+    // Is it really needed? Try without!
     private static void initLogging() {
+    	/**
+         * initLogging() procedure for starting logging with LOG_CONF_NAME = "camel.lcf" (hardcoded).
+         * 
+         */
         File logConfFile = new File(LOG_CONF_NAME);
 
         if (logConfFile.exists()) {
