@@ -119,4 +119,5 @@ testJar.dependsOn copyResourcesToLib
 jar.dependsOn copyJarsToLib
 testJar.dependsOn copyJarsToLib
 
-defaultTasks 'jar', 'testJar'
+//defaultTasks 'jar', 'testJar'
+defaultTasks 'tasks'
