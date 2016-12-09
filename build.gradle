@@ -1,5 +1,3 @@
-defaultTasks 'jar', 'testJar'
-
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'checkstyle'
@@ -121,3 +119,4 @@ testJar.dependsOn copyResourcesToLib
 jar.dependsOn copyJarsToLib
 testJar.dependsOn copyJarsToLib
 
+defaultTasks 'jar', 'testJar'
