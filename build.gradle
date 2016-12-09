@@ -1,3 +1,5 @@
+defaultTasks 'jar', 'testJar'
+
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'checkstyle'
