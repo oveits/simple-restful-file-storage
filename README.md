@@ -94,3 +94,5 @@ To run the test jar:
 
    1) start the main application, if not already done
    2) java -jar build/libs/velocity-temple-test-0.0.1-SNAPSHOT.jar
+
+-
