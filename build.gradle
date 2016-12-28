@@ -111,6 +111,13 @@ task testJar(type: Jar) {
    from sourceSets.main.output
 }
 
+tasks.withType(Checkstyle) {
+  ignoreFailures = true
+  reports {
+    html.enabled = true
+  }
+}
+
 // always call copyResourcesToLib when building jars:
 jar.dependsOn copyResourcesToLib
 testJar.dependsOn copyResourcesToLib
