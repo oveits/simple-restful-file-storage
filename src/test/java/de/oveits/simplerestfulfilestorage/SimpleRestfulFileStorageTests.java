@@ -18,20 +18,27 @@ package de.oveits.simplerestfulfilestorage;
 
 import java.util.HashMap;
 import java.util.Map;
-
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.test.junit4.CamelTestSupport;
+import org.apache.camel.test.spring.CamelSpringTestSupport;
 import org.junit.Before;
 import org.junit.Test;
-
+import org.springframework.context.support.AbstractXmlApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import de.oveits.simplerestfulfilestorage.MyExceptionHandler;
 
 /**
  * Unit test the cache when reloading .tm files in the classpath
  */
-public class SimpleRestfulFileStorageTests extends CamelTestSupport {
+public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
+	
+
+	@Override
+	protected AbstractXmlApplicationContext createApplicationContext() {
+		return new ClassPathXmlApplicationContext("META-INF/spring/camel-context.xml");
+		}
+		
 
     @Before
     public final void setUp() throws Exception {
@@ -310,8 +317,7 @@ public class SimpleRestfulFileStorageTests extends CamelTestSupport {
         
 
     }
-
-
+    
     protected RouteBuilder createRouteBuilder() throws Exception {
         return new RouteBuilder() {
             public final void configure() throws Exception {
@@ -336,6 +342,7 @@ public class SimpleRestfulFileStorageTests extends CamelTestSupport {
               	//        .throwException(new RuntimeException("dfhölkhsrfdöklhgsöoidhgöldsrjklgsejlg"))
               	.to("mock:result")
                 ;
+              
             	
             }
         };
