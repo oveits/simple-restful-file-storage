@@ -115,6 +115,9 @@ public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
         // mock expectations need to be specified before sending the message:
         mock.expectedBodiesReceived("File ttt created: href=http://localhost:2005/files/ttt");
         mock.expectedMessageCount(1);
+        
+        // In order to break this test for Jenkins test reporting, we temporarily add a requirement that will fail:
+        mock.expectedMessageCount(2);
 
         template.sendBodyAndHeaders("direct:recipientList", body, headers);
 
@@ -149,7 +152,7 @@ public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
         template.sendBodyAndHeaders("direct:recipientList", body, headers);
 
         // for debugging:
-        Exchange e0 = mock.getExchanges().get(0);  
+//        Exchange e0 = mock.getExchanges().get(0);  
 
         // TODO: replace the complicated asserts below by mock.expected configuration BEFORE  the file is sent:
         assertFalse(mock.getExchanges().get(0).getIn().getHeader("CamelHttpResponseCode") == null); 
