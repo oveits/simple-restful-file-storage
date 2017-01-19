@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.oveits.simplerestfulfilestorage;
 
 import java.io.File;
@@ -28,16 +29,16 @@ import org.apache.log4j.PropertyConfigurator;
  * A Camel Application
  */
 public class MainApp {
-	/**
-	 * Main Class: Simple RESTful File Store based on Apache Camel
-	 * 
-	 * Run with
-	 * java -jar -Dlog4j.configuration=file:full_path_to_log4j.properties full_path_to_jarfile.jar
-	 * 
-	 * Stop with Ctrl-C in the command line terminal running the program or kill from outside.
-	 * 
-	 * @param args: none
-	 */
+    /**
+     * Main Class: Simple RESTful File Store based on Apache Camel
+     * 
+     * Run with
+     * java -jar -Dlog4j.configuration=file:full_path_to_log4j.properties full_path_to_jarfile.jar
+     * 
+     * Stop with Ctrl-C in the command line terminal running the program or kill from outside.
+     * 
+     * @param args: none
+     */
 
     private static final String LOG_CONF_NAME = "camel.lcf";
     
@@ -45,9 +46,9 @@ public class MainApp {
         /**
          * main() procedure for starting logging and starting Camel routes
          * 
-         */    	
-    	
-    	// is it really needed? Try without!
+         */        
+        
+        // is it really needed? Try without!
         initLogging();
        
         startCamel(args);
@@ -55,7 +56,7 @@ public class MainApp {
     }
 
     private static void startCamel(final String[] args) throws Exception {
-    	/**
+        /**
          * startCamel() procedure for starting Camel routes
          * 
          */ 
@@ -67,7 +68,7 @@ public class MainApp {
     
     // Is it really needed? Try without!
     private static void initLogging() {
-    	/**
+        /**
          * initLogging() procedure for starting logging with LOG_CONF_NAME = "camel.lcf" (hardcoded).
          * 
          */

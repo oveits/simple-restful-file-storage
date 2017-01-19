@@ -10,66 +10,66 @@ import org.apache.log4j.Logger;
 
 
 public class FileUtilBeans {
-	
-	private static final Logger LOG = Logger.getLogger(FileUtilBeans.class);
-	
-	public final boolean deleteFileOld(@Header("fileName") final String fileName)  {
-//			if (true) throw(new RuntimeException("FileUtilBeans.deleteFile: exit1"));			
+    
+    private static final Logger LOG = Logger.getLogger(FileUtilBeans.class);
 
-	        File file = new File(fileName);
-//			if (true) throw(new RuntimeException("FileUtilBeans.deleteFile: exit2"));	
-	        
-	        boolean returnValue = FileUtil.deleteFile(file);
+    public final boolean deleteFileOld(@Header("fileName") final String fileName)  {
+//            if (true) throw(new RuntimeException("FileUtilBeans.deleteFile: exit1"));            
 
-	        return returnValue; //FileUtil.deleteFile(file);
-	    }
-	
-	public final boolean deleteFile(@Header("folderList") final String folderList, @Header("fileName") final String fileName) { //, @Body byte[] body){
-		// folderList accepts a comma-separated list of folders
-		if (folderList == null) {
-			throw(new RuntimeException("FileUtilBeans.class: deleteFile was called with null FolderList!"));			
-		}
-		
-		String[] fullPathArray = folderList.split(",");
-		boolean returnValue = false;
+            File file = new File(fileName);
+//            if (true) throw(new RuntimeException("FileUtilBeans.deleteFile: exit2"));    
+            
+            boolean returnValue = FileUtil.deleteFile(file);
 
-		// loop over list of folders:
-		for (int i = 0; i < fullPathArray.length; i++) {
-			try {
+            return returnValue; //FileUtil.deleteFile(file);
+    }
+    
+    public final boolean deleteFile(@Header("folderList") final String folderList, @Header("fileName") final String fileName) { //, @Body byte[] body){
+        // folderList accepts a comma-separated list of folders
+        if (folderList == null) {
+            throw(new RuntimeException("FileUtilBeans.class: deleteFile was called with null FolderList!"));            
+        }
+        
+        String[] fullPathArray = folderList.split(",");
+        boolean returnValue = false;
 
-				String name = fullPathArray[i].trim() + "/" + fileName;
-				File file = new File(name);
-				
-				 //FileUtil.deleteFile(file);
+        // loop over list of folders:
+        for (int i = 0; i < fullPathArray.length; i++) {
+            try {
 
-				try {	
-					LOG.debug("Trying to delete " + name);
-					returnValue = FileUtil.deleteFile(file);
-					LOG.debug("returnValue=" + returnValue);
-					if(returnValue == false) 
-						throw (new RuntimeException("Could not find " + file));
-					
-				} finally {
-					
-				}
-				// if you reach here, the file was found and we
-				// can leave the for loop:
-				break;
-			} catch (Exception e) {
-				// Throw an error, if this was the last file
-				// path in the list
-				if (i == fullPathArray.length - 1) {
-					LOG.debug("deleteFile: Could not find " + fileName + " in any of the folders " + folderList);
-					return false;
-//					throw (new RuntimeException("Could not find " + fileName + " in any of the folders " + folderList));
-				}
-			}
-		}
-		
-		return returnValue;
-	}
-	
-	public final String listFiles(@Header("directoryName") final String directoryName)  {
+                String name = fullPathArray[i].trim() + "/" + fileName;
+                File file = new File(name);
+                
+                 //FileUtil.deleteFile(file);
+
+                try {    
+                    LOG.debug("Trying to delete " + name);
+                    returnValue = FileUtil.deleteFile(file);
+                    LOG.debug("returnValue=" + returnValue);
+                    if(returnValue == false) 
+                        throw (new RuntimeException("Could not find " + file));
+                    
+                } finally {
+                    
+                }
+                // if you reach here, the file was found and we
+                // can leave the for loop:
+                break;
+            } catch (Exception e) {
+                // Throw an error, if this was the last file
+                // path in the list
+                if (i == fullPathArray.length - 1) {
+                    LOG.debug("deleteFile: Could not find " + fileName + " in any of the folders " + folderList);
+                    return false;
+//                    throw (new RuntimeException("Could not find " + fileName + " in any of the folders " + folderList));
+                }
+            }
+        }
+        
+        return returnValue;
+    }
+    
+    public final String listFiles(@Header("directoryName") final String directoryName)  {
 
         File directory = new File(directoryName);
         File[] filesArray = directory.listFiles();
@@ -81,7 +81,7 @@ public class FileUtilBeans {
 //           System.out.println(file);
            body = body + file.getPath() + "\n";
 //           System.out.println("body=" + body);
-//   		if (true) throw(new RuntimeException("listFiles: exit2"));			
+//           if (true) throw(new RuntimeException("listFiles: exit2"));            
 
         }
         
@@ -89,53 +89,53 @@ public class FileUtilBeans {
     }
 
 
-	// not needed: instead I use .to("file:...") directive in Camel
-//	public boolean createFile(@Header("fileName") String fileName) throws IOException  {
+    // not needed: instead I use .to("file:...") directive in Camel
+//    public boolean createFile(@Header("fileName") String fileName) throws IOException  {
 //        File file = new File(fileName);
 //        return FileUtil.createNewFile(file);
 //    }
 
 
-	public final byte[] readFile(@Header("folderList") final String folderList, @Header("fileName") final String fileName) { //, @Body byte[] body){
-		// folderList accepts a comma-separated list of folders
-		if (folderList == null) {
-			throw(new RuntimeException("FileUtilBeans.class: readFile was called with null FolderList!"));			
-		}
-		
-		String[] fullPathArray = folderList.split(",");
-		byte[] body = null;
+    public final byte[] readFile(@Header("folderList") final String folderList, @Header("fileName") final String fileName) { //, @Body byte[] body){
+        // folderList accepts a comma-separated list of folders
+        if (folderList == null) {
+            throw(new RuntimeException("FileUtilBeans.class: readFile was called with null FolderList!"));            
+        }
+        
+        String[] fullPathArray = folderList.split(",");
+        byte[] body = null;
 
-		// loop over list of folders:
-		for (int i = 0; i < fullPathArray.length; i++) {
-			try {
+        // loop over list of folders:
+        for (int i = 0; i < fullPathArray.length; i++) {
+            try {
 
-				String name = fullPathArray[i].trim() + "/" + fileName;
-				File inputFile = new File(name);
+                String name = fullPathArray[i].trim() + "/" + fileName;
+                File inputFile = new File(name);
 
-				FileInputStream fileInputStream = new FileInputStream(
-						inputFile);
-				byte[] buffer = new byte[(int) inputFile
-						.length()];
+                FileInputStream fileInputStream = new FileInputStream(
+                        inputFile);
+                byte[] buffer = new byte[(int) inputFile
+                        .length()];
 
-				try {
-					
-					fileInputStream.read(buffer);
-					body = buffer;
-				} finally {
-					fileInputStream.close();
-				}
-				// if you reach here, the file was found and we
-				// can leave the for loop:
-				break;
-			} catch (IOException e) {
-				// Throw an error, if this was the last file
-				// path in the list
-				if (i == fullPathArray.length - 1) {
-					throw (new RuntimeException("Could not find " + fileName + " in any of the folders " + folderList));
-				}
-			}
-		}
-		
-		return body;
-	}
+                try {
+                    
+                    fileInputStream.read(buffer);
+                    body = buffer;
+                } finally {
+                    fileInputStream.close();
+                }
+                // if you reach here, the file was found and we
+                // can leave the for loop:
+                break;
+            } catch (IOException e) {
+                // Throw an error, if this was the last file
+                // path in the list
+                if (i == fullPathArray.length - 1) {
+                    throw (new RuntimeException("Could not find " + fileName + " in any of the folders " + folderList));
+                }
+            }
+        }
+        
+        return body;
+    }
 }
