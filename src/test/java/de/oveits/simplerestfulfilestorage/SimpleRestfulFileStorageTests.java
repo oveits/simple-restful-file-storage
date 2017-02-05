@@ -1,3 +1,20 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.oveits.simplerestfulfilestorage;
 /**
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -32,13 +49,13 @@ import de.oveits.simplerestfulfilestorage.MyExceptionHandler;
  * Unit test the cache when reloading .tm files in the classpath
  */
 public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
-	
+    
 
-	@Override
-	protected AbstractXmlApplicationContext createApplicationContext() {
-		return new ClassPathXmlApplicationContext("META-INF/spring/camel-context.xml");
-		}
-		
+    @Override
+    protected AbstractXmlApplicationContext createApplicationContext() {
+        return new ClassPathXmlApplicationContext("META-INF/spring/camel-context.xml");
+    }
+        
 
     @Before
     public final void setUp() throws Exception {
@@ -66,7 +83,7 @@ public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
     }
     
     public final void setupCreatedFile() throws Exception {
-    	
+        
         MockEndpoint mock = getMockEndpoint("mock:result");
         Map<String, Object> headers = new HashMap<String, Object>();
         String body;
@@ -217,9 +234,9 @@ public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
     
     @Test
     public final void readFile() throws Exception {
-    	//
-    	// INIT: 
-    	//
+        //
+        // INIT: 
+        //
         MockEndpoint mock = getMockEndpoint("mock:result");
         Map<String, Object> headers = new HashMap<String, Object>();
 //        String body;
@@ -245,7 +262,7 @@ public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
         
         // make sure the file is created:
         setupCreatedFile();       
-   	
+       
         //
         // read file, when it exists:
         //
@@ -269,9 +286,9 @@ public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
     
     @Test
     public final void deleteFile() throws Exception {  
-    	//
-    	// INIT: 
-    	//
+        //
+        // INIT: 
+        //
         MockEndpoint mock = getMockEndpoint("mock:result");
         Map<String, Object> headers = new HashMap<String, Object>();
 //        String body;
@@ -294,7 +311,7 @@ public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
         headers.put("CamelHttpMethod", "DELETE");
 
         template.sendBodyAndHeaders("direct:recipientList", "Body", headers);  
-    	
+        
         mock.assertIsSatisfied();
         
         //
@@ -322,29 +339,29 @@ public class SimpleRestfulFileStorageTests extends CamelSpringTestSupport {
     protected RouteBuilder createRouteBuilder() throws Exception {
         return new RouteBuilder() {
             public final void configure() throws Exception {
-            	
-        		onException(Exception.class)
-				.setHeader("ResultCode", constant(1))
-				.setHeader("ResultText", constant("Failure"))
-				.convertBodyTo(String.class).bean(MyExceptionHandler.class)
-				.log("failed request: ${body}")
-//				.setHeader("Content-Type", constant("application/x-www-form-urlencoded"))
-				.setHeader("Content-Type", constant("text/html"))
-//				.setHeader("Content-Type", constant("text/plain"))				
-				.handled(true)
-//				.continued(true)
-				.end();
-            	
+                
+                onException(Exception.class)
+                .setHeader("ResultCode", constant(1))
+                .setHeader("ResultText", constant("Failure"))
+                .convertBodyTo(String.class).bean(MyExceptionHandler.class)
+                .log("failed request: ${body}")
+//                .setHeader("Content-Type", constant("application/x-www-form-urlencoded"))
+                .setHeader("Content-Type", constant("text/html"))
+//                .setHeader("Content-Type", constant("text/plain"))                
+                .handled(true)
+//                .continued(true)
+                    .end();
+                
 
               
-              from("direct:recipientList")
-              	.recipientList(simple("${headers.recipientList}"), ",")
-              	// for troubleshooting:
-              	//        .throwException(new RuntimeException("dfhölkhsrfdöklhgsöoidhgöldsrjklgsejlg"))
-              	.to("mock:result")
-                ;
+                from("direct:recipientList")
+                    .recipientList(simple("${headers.recipientList}"), ",")
+                  // for troubleshooting:
+                  //        .throwException(new RuntimeException("dfhölkhsrfdöklhgsöoidhgöldsrjklgsejlg"))
+                    .to("mock:result")
+                  ;
               
-            	
+                
             }
         };
     }

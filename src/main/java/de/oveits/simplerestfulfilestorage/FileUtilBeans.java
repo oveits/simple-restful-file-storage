@@ -1,3 +1,20 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.oveits.simplerestfulfilestorage;
 
 import java.io.File;
@@ -16,18 +33,18 @@ public class FileUtilBeans {
     public final boolean deleteFileOld(@Header("fileName") final String fileName)  {
 //            if (true) throw(new RuntimeException("FileUtilBeans.deleteFile: exit1"));            
 
-            File file = new File(fileName);
+        File file = new File(fileName);
 //            if (true) throw(new RuntimeException("FileUtilBeans.deleteFile: exit2"));    
-            
-            boolean returnValue = FileUtil.deleteFile(file);
+        
+        boolean returnValue = FileUtil.deleteFile(file);
 
-            return returnValue; //FileUtil.deleteFile(file);
+        return returnValue; //FileUtil.deleteFile(file);
     }
     
     public final boolean deleteFile(@Header("folderList") final String folderList, @Header("fileName") final String fileName) { //, @Body byte[] body){
         // folderList accepts a comma-separated list of folders
         if (folderList == null) {
-            throw(new RuntimeException("FileUtilBeans.class: deleteFile was called with null FolderList!"));            
+            throw new RuntimeException("FileUtilBeans.class: deleteFile was called with null FolderList!");            
         }
         
         String[] fullPathArray = folderList.split(",");
@@ -46,8 +63,9 @@ public class FileUtilBeans {
                     LOG.debug("Trying to delete " + name);
                     returnValue = FileUtil.deleteFile(file);
                     LOG.debug("returnValue=" + returnValue);
-                    if(returnValue == false) 
-                        throw (new RuntimeException("Could not find " + file));
+                    if (returnValue == false) {
+                        throw new RuntimeException("Could not find " + file);
+                    }
                     
                 } finally {
                     
@@ -79,7 +97,7 @@ public class FileUtilBeans {
         for (File file:filesArray) {
            // prints file and directory paths
 //           System.out.println(file);
-           body = body + file.getPath() + "\n";
+            body = body + file.getPath() + "\n";
 //           System.out.println("body=" + body);
 //           if (true) throw(new RuntimeException("listFiles: exit2"));            
 

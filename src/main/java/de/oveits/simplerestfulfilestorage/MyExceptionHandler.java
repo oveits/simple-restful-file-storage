@@ -1,3 +1,20 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.oveits.simplerestfulfilestorage;
 
 
@@ -36,13 +53,13 @@ public class MyExceptionHandler {
         
         String responseBody = null;
         
-    try {
         try {
-            HttpOperationFailedException httpe = (HttpOperationFailedException) e;
-            responseBody = httpe.getResponseBody();
-        } catch (Exception kkk) {
+            try {
+                HttpOperationFailedException httpe = (HttpOperationFailedException) e;
+                responseBody = httpe.getResponseBody();
+            } catch (Exception kkk) {
             
-        }
+            }
         
 
         
@@ -51,8 +68,8 @@ public class MyExceptionHandler {
         
 //        body = myBody.toString();
         
-        final int clipAfter = 0;  // 0 means: do not clip
-        StringBuilder sb = new StringBuilder();
+            final int clipAfter = 0;  // 0 means: do not clip
+            StringBuilder sb = new StringBuilder();
         
         
         // get error message:
@@ -93,102 +110,102 @@ public class MyExceptionHandler {
 //        sb.append(e.getCause());
         
         // get myStack info:
-        sb.append("\nSTACK: ");
+            sb.append("\nSTACK: ");
         
-        if (headers == null) {
-          headers = new HashMap<String, Object>();
-        }
-        if (headers != null && headers.get("myStackList") != null && !headers.get("myStackList").toString().equals("[]")) {
-            try {
-                sb.append(String.valueOf(Lists.reverse((List<String>) headers.get("myStackList"))));
-            } catch (Exception stacklistExeption) {
+            if (headers == null) {
+                headers = new HashMap<String, Object>();
+            }
+            if (headers != null && headers.get("myStackList") != null && !headers.get("myStackList").toString().equals("[]")) {
+                try {
+                    sb.append(String.valueOf(Lists.reverse((List<String>) headers.get("myStackList"))));
+                } catch (Exception stacklistExeption) {
                 // for debugging:
 //                Object myTraceListObject = headers.get("myTraceList");
 //                String myTraceListClass = headers.get("myTraceList").getClass().getName();
-                try {
-                    sb.append(headers.get("myStackList").toString() + " (not reversed)");            
-                } catch (Exception stacklistExeption2) {
-                    sb.append("(Error retrieving stack)");    
-                }        
-            }
+                    try {
+                        sb.append(headers.get("myStackList").toString() + " (not reversed)");            
+                    } catch (Exception stacklistExeption2) {
+                        sb.append("(Error retrieving stack)");    
+                    }        
+                }
             
 //            finally {
 //                sb.append("(Error reading stack)");
 //            }
             
             // remove StackList, since it is too big to be transported as HTML header:
-            headers.remove("myStackList");
-        } else {
-          if (headers != null && headers.get("myStack") != null && !headers.get("myStack").toString().isEmpty()) {
-            sb.append(headers.get("myStack").toString());
-          }
+                headers.remove("myStackList");
+            } else {
+                if (headers != null && headers.get("myStack") != null && !headers.get("myStack").toString().isEmpty()) {
+                    sb.append(headers.get("myStack").toString());
+                }
             
-        }
+            }
         
         // get Trace info:
         
-        if (headers != null && headers.get("myTraceList") != null) {
-            sb.append("\nTRACE: ");
-            try {
-                sb.append(String.valueOf(Lists.reverse((List<String>) headers.get("myTraceList"))));                
-            } catch (Exception tracelistExeption) {
+            if (headers != null && headers.get("myTraceList") != null) {
+                sb.append("\nTRACE: ");
+                try {
+                    sb.append(String.valueOf(Lists.reverse((List<String>) headers.get("myTraceList"))));                
+                } catch (Exception tracelistExeption) {
                 // for debugging:
 //                Object myTraceListObject = headers.get("myTraceList");
 //                String myTraceListClass = headers.get("myTraceList").getClass().getName();
-                try {
-                    sb.append(headers.get("myTraceList").toString() + " (not reversed)");            
-                } catch (Exception tracelistExeption2) {
-                    sb.append("(Error retrieving trace)");    
-                }        
-            } 
+                    try {
+                        sb.append(headers.get("myTraceList").toString() + " (not reversed)");            
+                    } catch (Exception tracelistExeption2) {
+                        sb.append("(Error retrieving trace)");    
+                    }
+                }
             
             // remove TraceList, since it is too big to be transported as HTML header:
-            headers.remove("myTraceList");
-        }
+                headers.remove("myTraceList");
+            }
         
 
                 
         // get header info:
-        sb.append("\nHEADERS: ");
+            sb.append("\nHEADERS: ");
         //headers.toString().replaceAll("([Pp][Aa][Ss][Ss][a-zA-Z]=)([^, ]{1, }), ", "\1XXXXXX, ");        
 //        sb.append(headers.toString().replaceAll("([Pp][Aa][Ss][Ss][a-z, A-Z, 0-9]*=)([^, ^}^\n]*)", "$1(removed)"));
         // now NullPointerSave
-        sb.append(String.valueOf(headers).replaceAll("([Pp][Aa][Ss][Ss][a-z, A-Z, 0-9]*=)([^, ^}^\n]*)", "$1(removed)"));
+            sb.append(String.valueOf(headers).replaceAll("([Pp][Aa][Ss][Ss][a-z, A-Z, 0-9]*=)([^, ^}^\n]*)", "$1(removed)"));
 
 //        sb.append(headers.toString());
 
         // get body (clipped after staticclipAfter integer)
-        sb.append("\nBODY: ");
-        if (clipAfter == 0 || body.length() <= clipAfter) {
-            sb.append(String.valueOf(body).replaceAll("([Pp][Aa][Ss][Ss][a-z, A-Z, 0-9]*=)([^, ^}^\n]*)", "$1(removed)"));
-        } else {
-            sb.append(String.valueOf(body).replaceAll("([Pp][Aa][Ss][Ss][a-z, A-Z, 0-9]*=)([^, ^}^\n]*)", "$1(removed)"), 0, clipAfter);
-            sb.append("... (clipped after " + clipAfter + " of " + body.length() + " chars)");
-        }
+            sb.append("\nBODY: ");
+            if (clipAfter == 0 || body.length() <= clipAfter) {
+                sb.append(String.valueOf(body).replaceAll("([Pp][Aa][Ss][Ss][a-z, A-Z, 0-9]*=)([^, ^}^\n]*)", "$1(removed)"));
+            } else {
+                sb.append(String.valueOf(body).replaceAll("([Pp][Aa][Ss][Ss][a-z, A-Z, 0-9]*=)([^, ^}^\n]*)", "$1(removed)"), 0, clipAfter);
+                sb.append("... (clipped after " + clipAfter + " of " + body.length() + " chars)");
+            }
         
         // does not seem to be written to the message...
 //        if (headers != null) {
-        if (headers.get("myExceptionMessages") != null) {
-            headers.put("myExceptionMessages", e.getMessage() + ";" + headers.get("myExceptionMessages").toString());
-        } else {
-            headers.put("myExceptionMessages", e.getMessage());
+            if (headers.get("myExceptionMessages") != null) {
+                headers.put("myExceptionMessages", e.getMessage() + ";" + headers.get("myExceptionMessages").toString());
+            } else {
+                headers.put("myExceptionMessages", e.getMessage());
 //        headers.put("Content-Type", "text/html; charset=UTF-8");
 //        headers.put("Content-Type", "text; charset=UTF-8");
-        }
+            }
         
 //        headers.put("Content-Type", "text/html; charset=UTF-8");
         
-        if (e != null && e.getMessage() != null) {
-        headers.put("ResultText", e.getMessage());
-        headers.put("ResultCode", 1);
-        }
+            if (e != null && e.getMessage() != null) {
+                headers.put("ResultText", e.getMessage());
+                headers.put("ResultCode", 1);
+            }
         
 //        else {
 //            headers = new HashMap<String, Object>();
 //            headers.put("myExceptionMessages", e.getMessage());
         // for the case headers is too large to be delivered back, it is more save to remove the header:
-        headers.clear();
-        headers.put("Content-Type", "text/html; charset=UTF-8");
+            headers.clear();
+            headers.put("Content-Type", "text/html; charset=UTF-8");
 //        }
         //.setHeader("Content-Type", constant("text/html; charset=UTF-8"))
         
@@ -196,17 +213,17 @@ public class MyExceptionHandler {
         //return sb.toString().replaceAll("\n", "\r\n"); // replacement helps IE to display the linebreaks correctly
         // seems to work better and will be displayed correctly in IE and FireFox
         //System.out.println("class MyExceptionHandler: return value = <pre>" + sb.toString() + "</pre>");
-        return "<pre>" + sb.toString() + "</pre>";
+            return "<pre>" + sb.toString() + "</pre>";
 //        return "mmmmmmmmmmmmmmmm";
         //return sb.toString(); // replacement helps IE to display the linebreaks correctly
-    } catch (Exception exeptionHandlerException) {
-        String myBodyString =  "Exception in Exeption Handler: " + exeptionHandlerException.getMessage();
-        myBody = (Object) myBodyString;
+        } catch (Exception exeptionHandlerException) {
+            String myBodyString =  "Exception in Exeption Handler: " + exeptionHandlerException.getMessage();
+            myBody = (Object) myBodyString;
         // for the case headers is too large to be delivered back, it is more save to remove the header:
-        headers.clear();
-        headers.put("Content-Type", "text/html; charset=UTF-8");
-        return myBodyString;
-    }
+            headers.clear();
+            headers.put("Content-Type", "text/html; charset=UTF-8");
+            return myBodyString;
+        }
     }
     
 //    } catch (Exception exeptionHandlerException) {

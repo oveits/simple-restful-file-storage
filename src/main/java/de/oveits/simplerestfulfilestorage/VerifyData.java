@@ -1,3 +1,20 @@
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package de.oveits.simplerestfulfilestorage;
 
 
@@ -20,8 +37,8 @@ public class VerifyData {
 // header("Variable2") = Value2
 //
   
-  private final int maxReportedVariables = 3;
-  private final int variableMaxlength = 50;
+    private final int maxReportedVariables = 3;
+    private final int variableMaxlength = 50;
 
     public final String verifyRegex(@Body final Object body, @Headers final Map<String, Object> headers) throws Exception {
         return verifyRegex(body.toString(), headers);
@@ -81,7 +98,7 @@ public class VerifyData {
                         myExceptionText = headerToBeChecked.toString() + " does not match the regular expression " + myHeaderRegexValue.toString();
                     }
                     
-                    throw (new Exception(myExceptionText));
+                    throw new Exception(myExceptionText);
                 }
                     
             }
@@ -168,7 +185,7 @@ public class VerifyData {
                 exceptionMessage = "Could not resolve following parameters in velocity script: " + unresolvedParams;
             }
             System.out.println("-------------- " + exceptionMessage + " --------------");
-            throw (new RuntimeException(exceptionMessage));                
+            throw new RuntimeException(exceptionMessage);                
         }
         
         
