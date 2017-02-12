@@ -288,6 +288,76 @@
           </execution>
         </executions>
       </plugin>
+      
+      <plugin>
+  <groupId>com.lazerycode.jmeter</groupId>
+  <artifactId>jmeter-maven-plugin</artifactId>
+  <version>2.1.0</version>
+  <configuration>
+    <!-- <jmeterVersion>2.9</jmeterVersion> -->
+    <!--
+       Die Ergebnisse werden normalerweise in einer Datei 
+       /target/jmeter/results/<TestName>-<TimeStamp>.jtl abgelegt. 
+       Für die Weiterverarbeitung ist der Timestamp nur hinderlich.
+    -->
+    <testResultsTimestamp>false</testResultsTimestamp>
+ 
+    <!--
+       Für die Fehlersuche bewährt es sich anfangs das LogLevel hochzuschrauben.
+       Die JMeter-Logs werden in die Datei jmeter.log geschrieben.
+    -->
+    <overrideRootLogLevel>DEBUG</overrideRootLogLevel>
+ 
+    <!--
+       Konsolen-Ausgaben des JMeter-Prozesses werden standardmäßig unterdrückt (warum auch 
+       immer). Es wird aber explizit der Listener "Create Summary Results" verwendet, damit
+       auf der Konsole der aktuelle Testfortschritt mitverfolgt werden kann.
+    -->
+    <suppressJMeterOutput>false</suppressJMeterOutput>
+ 
+    <!--
+       Wenn Tests fehlschlagen (z.B. HTTP-Requests in einen Timeout laufen), wird normalerweise
+       auch das entsprechende Maven-Goal als fehlerhaft markiert (und nachfolgende Schritte nicht
+       mehr ausgeführt). Im Beispiel sollen aber trotz Fehler Graphen erzeugt werden.
+    -->
+    <ignoreResultFailures>true</ignoreResultFailures>
+    <!--
+      Trying to define Jmeter version as described on 
+
+
+    -->
+  </configuration>
+    <dependencies>
+    <dependency>
+      <groupId>kg.apc</groupId>
+      <artifactId>jmeter-plugins</artifactId>
+      <version>1.0.0</version>
+      <exclusions>
+         <!--
+            Leider sind einige Abhängigkeiten nicht in mvncentral zu finden,
+            deshalb müssen sie hier explizit ausgeschlossen werden.
+            Für eine vollständge Liste, siehe https://github.com/mlex/jmeter-maven-example/
+        -->
+        <exclusion>
+            <groupId>kg.apc</groupId>
+            <artifactId>perfmon</artifactId>
+        </exclusion>
+        <!-- ... -->
+ 
+        <!--
+            Aufgrund eines Bugs im jmeter-maven-plugin (siehe 
+            https://github.com/Ronnie76er/jmeter-maven-plugin/issues/77) müssen 
+            JMeter-Abhängigkeiten auch ausgeschlossen werden.
+        -->
+        <exclusion>
+            <groupId>org.apache.jmeter</groupId>
+            <artifactId>jorphan</artifactId>
+        </exclusion>
+        <!-- ... -->
+      </exclusions>
+    </dependency>
+  </dependencies>
+  </plugin>
     
     </plugins>
   </build>

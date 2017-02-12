@@ -11,4 +11,4 @@ src/main/resources/files/*
 *.swp
 build/*
 *.bak*
-old
+*old
